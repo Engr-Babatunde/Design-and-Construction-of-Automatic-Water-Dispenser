@@ -1,0 +1,84 @@
+Program codes 
+// Automatic water dispenser 
+// Variable declearation stage 
+int trigger2 = 11; 
+int echo2 =12; 
+int trigger1 = 8; 
+int echo1 =9; 
+int relay = 10; 
+int ledready =6; 
+int ledfull = 7; 
+int buzzer = 5; 
+long duration1; 
+long duration2; 
+float distance1; 
+float distance2; 
+//Pin Configuration stage 
+void setup() { 
+Serial.begin(9600); 
+pinMode(trigger1,OUTPUT); 
+pinMode(echo1,INPUT); 
+pinMode(trigger2,OUTPUT); 
+pinMode(echo2,INPUT); 
+pinMode(relay,OUTPUT); 
+pinMode(ledready,OUTPUT); 
+pinMode(ledfull, OUTPUT); 
+pinMode(buzzer, OUTPUT); 
+33 
+} 
+//ultrasonic sessor1 configuration 
+void measure_distance1(){ 
+digitalWrite(trigger1, LOW); 
+delayMicroseconds(2); 
+digitalWrite(trigger1, HIGH); 
+delayMicroseconds(10); 
+digitalWrite(trigger1, LOW); 
+delayMicroseconds(2); 
+duration1=pulseIn(echo1,HIGH); 
+distance1=(duration1*0.034)/2; 
+} 
+//ultasonic sensor2 configuration 
+void measure_distance2(){ 
+digitalWrite(trigger2, LOW); 
+delayMicroseconds(2); 
+digitalWrite(trigger2, HIGH); 
+delayMicroseconds(10); 
+digitalWrite(trigger2, LOW); 
+delayMicroseconds(2); 
+duration2=pulseIn(echo2,HIGH); 
+distance2=(duration2*0.034)/2; 
+} 
+// Main program 
+void loop() { 
+measure_distance1(); 
+measure_distance2(); 
+34 
+Serial.print("sensor: "); 
+ 
+ 
+35 
+ 
+  Serial.print(distance1); 
+  Serial.println(" cm "); 
+  if (distance1<5 && distance2>20){ 
+    digitalWrite(ledready, HIGH); 
+    digitalWrite(relay,HIGH); 
+     digitalWrite(ledfull, LOW); 
+     digitalWrite(buzzer, LOW); 
+    delay(200); 
+  } 
+    else if (distance1<5 && distance2<20){ 
+      digitalWrite(relay,LOW); 
+      digitalWrite(ledready, LOW); 
+      digitalWrite(ledfull, HIGH); 
+      digitalWrite(buzzer, HIGH); 
+      delay(200); 
+    } 
+  else 
+  { 
+      digitalWrite(relay,LOW); 
+      digitalWrite(ledready, LOW); 
+       digitalWrite(ledfull, LOW); 
+       digitalWrite(buzzer, LOW); 
+  } 
+  }
